@@ -9,7 +9,8 @@
 </head>
 <body>
     <div id="boards">
-        <h1>Ciao</h1>
+        <h2>Dato n, trovare tutte le possibili posizioni di n regine, su una scacchiera n x n , in modo tale da non potersi mangiare l’una con le altre.</h2>
+        <h3>Le regine possono muoversi in tutte le direzioni, ovvero orizzontale, verticale e diagonale</h3>
         <div v-if="load && num > 0">
             caricando...
         </div>
@@ -23,25 +24,28 @@
                 {{alert}} è un numero troppo piccolo
             </h4>
         </div>
-        <input min="1" max="10" @keyup.enter="(num <= 10 && num > 0 && num != 2 && num != 3) ? start() : alertP()" v-model="num" type="number">
-
+        <div class="text">
+            <label for="number">Quante regine ? </label>
+            <input id="number" min="1" max="10" @keyup.enter="(num <= 10 && num > 0) ? start() : alertP()" v-model="num" type="number">
+            <span v-if="result.length > 0">Ci sono <strong>{{result.length}}</strong> risultati</span>
+        </div>
         <div v-if="result.length > 0 && !load" class="boards">
-            <div v-for="(box,index) in result" class="queens-box">
+            <div 
+                :style="(result.length > 10) ? 'width: 340px; height: 340px;' : null"
+                v-for="(box,index) in result" 
+                class="queens-box"
+            >
                 <div :style="`height:${dim}%; `" class="box" v-for="(row,index) in box">
                     <div 
                         v-for="(col,index) in row"
                         :style="`width:${dim}%;`"
-                        :class=" (col == 'Q') ? 'queen' : null" 
-                        class="casella"
+                        :class=" (col == 'Q') ? (result.length == 1) ? 'queen-alone' : 'queen' : null" 
+                        class="box"
                     >
     
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="boards" v-else-if="alert">
-            <h2>Non ci sono risultati</h2>
         </div>
     </div>
 
